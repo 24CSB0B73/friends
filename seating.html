@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        :root {
+            --primary-color: #000000;
+            --secondary-color: #ffffff;
+            --accent-color: #130404;
+            --transition-speed: 0.3s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #000;
+            min-height: 100vh;
+            color: var(--secondary-color);
+        }
+
+        .cafe-container {
+            width: 1000px;
+            height: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            position: relative;
+            border: 2px solid #8b4513;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
+        }
+
+        .corner-couch {
+            position: absolute;
+            right: 40px;
+            bottom: 40px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .couch-left {
+            width: 200px;
+            height: 100px;
+            background-color: #946b54;
+            position: absolute;
+            bottom: 0;
+            right: 100px;
+            border-radius: 10px 0 0 10px;
+        }
+
+        .couch-right {
+            width: 100px;
+            height: 200px;
+            background-color: #946b54;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .couch-back-left {
+            width: 200px;
+            height: 40px;
+            background-color: #7d5a46;
+            position: absolute;
+            bottom: 100px;
+            right: 100px;
+            border-radius: 10px 0 0 0;
+        }
+
+        .couch-back-right {
+            width: 40px;
+            height: 200px;
+            background-color: #7d5a46;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .couch-cushion {
+            position: absolute;
+            background-color: #a37b5f;
+            border-radius: 5px;
+        }
+
+        .corner-couch:hover:not(.occupied) {
+            filter: brightness(1.1);
+        }
+
+        .corner-couch.selected .couch-left,
+        .corner-couch.selected .couch-right {
+            background-color: #32cd32;
+        }
+
+        .corner-couch.selected .couch-back-left,
+        .corner-couch.selected .couch-back-right,
+        .corner-couch.selected .couch-cushion {
+            background-color: #2ab52a;
+        }
+
+        .corner-label {
+            position: absolute;
+            bottom: 50px;
+            right: 150px;
+            font-weight: bold;
+            color: white;
+            font-size: 16px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .table {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #deb887;
+            position: absolute;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: 2px solid #8b4513;
+            color: black;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .table.occupied {
+            background-color: #cd853f;
+            cursor: not-allowed;
+        }
+
+        .table:not(.occupied):hover {
+            background-color: #90ee90;
+            transform: scale(1.1);
+        }
+
+        .table.selected {
+            background-color: #32cd32;
+            color: white;
+        }
+
+        .reception {
+            width: 250px;
+            height: 70px;
+            background-color: #8b4513;
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .legend {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border: 1px solid #8b4513;
+            border-radius: 5px;
+            color: white;
+        }
+
+        .legend-item {
+            margin: 8px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .legend-color {
+            width: 24px;
+            height: 24px;
+            margin-right: 12px;
+            border: 1px solid #8b4513;
+            border-radius: 4px;
+        }
+
+        .next-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 12px 24px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none;
+            font-size: 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .next-button:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+        }
+
+        .next-button.visible {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .arrow {
+            width: 20px;
+            height: 20px;
+            border-right: 3px solid white;
+            border-top: 3px solid white;
+            transform: rotate(45deg);
+            display: inline-block;
+        }
+
+        .view-indicator {
+            position: absolute;
+            bottom: 160px;
+            right: 160px;
+            transform: rotate(-45deg);
+            color: #ccc;
+            font-style: italic;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="cafe-container" id="cafe">
+        <div class="reception">RECEPTION</div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #946b54;"></div>
+                <span>Available Seating</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #cd853f;"></div>
+                <span>Occupied</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #32cd32;"></div>
+                <span>Selected</span>
+            </div>
+        </div>
+        
+        <div class="corner-couch" id="cornerCouch">
+            <div class="couch-back-left"></div>
+            <div class="couch-back-right"></div>
+            <div class="couch-left"></div>
+            <div class="couch-right"></div>
+            <div class="couch-cushion" style="bottom: 10px; right: 110px; width: 180px; height: 80px;"></div>
+            <div class="couch-cushion" style="bottom: 110px; right: 10px; width: 80px; height: 180px;"></div>
+            <div class="corner-label">Premium Corner Couch</div>
+            <div class="view-indicator">← Best view of café</div>
+        </div>
+    </div>
+    <button class="next-button" id="nextButton">
+        Continue <span class="arrow"></span>
+    </button>
+
+    <script>
+        const tablePositions = [
+            {x: 150, y: 150},
+            {x: 300, y: 150},
+            {x: 450, y: 150},
+            {x: 150, y: 300},
+            {x: 300, y: 300},
+            {x: 450, y: 300},
+            {x: 150, y: 450},
+            {x: 300, y: 450},
+            {x: 450, y: 450}
+        ];
+
+        const occupiedTables = new Set([1, 4, 7]);
+        const cafe = document.getElementById('cafe');
+        const nextButton = document.getElementById('nextButton');
+        const cornerCouch = document.getElementById('cornerCouch');
+
+        // Add tables
+        tablePositions.forEach((pos, index) => {
+            const table = document.createElement('div');
+            table.className = `table${occupiedTables.has(index) ? ' occupied' : ''}`;
+            table.style.left = pos.x + 'px';
+            table.style.top = pos.y + 'px';
+            table.textContent = (index + 1).toString();
+
+            table.addEventListener('click', () => {
+                if (!occupiedTables.has(index)) {
+                    table.classList.toggle('selected');
+                    updateNextButton();
+                }
+            });
+
+            cafe.appendChild(table);
+        });
+
+        cornerCouch.addEventListener('click', () => {
+            cornerCouch.classList.toggle('selected');
+            updateNextButton();
+        });
+
+        function updateNextButton() {
+            const anySelected = document.querySelector('.table.selected, .corner-couch.selected');
+            nextButton.classList.toggle('visible', anySelected !== null);
+        }
+
+        nextButton.addEventListener('click', () => {
+            const selectedTables = Array.from(document.querySelectorAll('.table.selected'))
+                .map(table => table.textContent);
+            const cornerSelected = cornerCouch.classList.contains('selected');
+            
+            let message = '';
+            if (selectedTables.length > 0) {
+                message += 'Selected tables: ' + selectedTables.join(', ') + '\n';
+            }
+            if (cornerSelected) {
+                message += 'Premium Corner Couch selected';
+            }
+            alert(message + '\nProceeding to next page...');
+        });
+    </script>
+</body>
+</html>

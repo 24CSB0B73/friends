@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #000000;
+            --secondary-color: #ffffff;
+            --accent-color: #130404;
+            --transition-speed: 0.3s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-image: url('friendsbg.jpeg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            color: var(--secondary-color);
+        }
+
+        .container {
+            position: relative;
+            min-height: 100vh;
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+
+        .main-nav {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: rgba(0, 0, 0, 0.8);
+            height: 75px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn-secondary {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            background-color: var(--secondary-color);
+            color: var(--accent-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--accent-color);
+            color: var(--secondary-color);
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .image-container {
+            position: relative;
+            aspect-ratio: 1;
+            cursor: pointer;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .image-placeholder {
+            width: 100%;
+            height: 100%;
+            background: var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .text-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.8);
+            color: var(--secondary-color);
+            padding: 15px;
+            transform: translateY(100%);
+            transition: transform var(--transition-speed) ease;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .image-container.active .text-overlay {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .image-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                padding: 10px;
+            }
+
+            .btn-secondary {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="main-nav">
+            <div class="nav-buttons">
+                <button class="btn-secondary">menu</button>
+                <button class="btn-secondary">seating</button>
+                <button class="btn-secondary">chatbot</button>
+                <button class="btn-secondary">shopping cart</button>
+                <button class="btn-secondary">quize time</button>
+                <button class="btn-secondary">create own</button>
+                <button class="btn-secondary">customer reviews</button>
+            </div>
+        </nav>
+        <div class="image-grid">
+            <div class="image-container">
+                <div class="image-placeholder">
+                    <img src="pizza.jpeg" alt="Pizza">
+                </div>
+                <div class="text-overlay">joey doesn't share food</div>
+            </div>
+            <div class="image-container">
+                <div class="image-placeholder">
+                    <img src="coffe mug.jpeg" alt="Coffee mug">
+                </div>
+                <div class="text-overlay">could i be drinking any more coffee</div>
+            </div>
+            <div class="image-container">
+                <div class="image-placeholder">
+                    <img src="couch.jpeg" alt="Placeholder 3">
+                </div>
+                <div class="text-overlay">the legendary orange couch where all the chatter began</div>
+            </div>
+            <div class="image-container">
+                <div class="image-placeholder">
+                    <img src="peephole.jpeg" alt="Placeholder 4">
+                </div>
+                <div class="text-overlay">the one where mondler secret revealed</div>
+            </div>
+            <div class="image-container">
+                <div class="image-placeholder">
+                    <img src="voilin.jpeg" alt="Placeholder 5">
+                </div>
+                <div class="text-overlay">smelly cat</div>
+            </div>
+            <div class="image-container">
+                <div class="image-placeholder">
+                    <img src="divorce.jpeg" alt="Placeholder 6">
+                </div>
+                <div class="text-overlay">ross got married to emily and got divorced....again!!</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.image-container').forEach(container => {
+            container.addEventListener('click', () => {
+                // Remove active class from all containers
+                document.querySelectorAll('.image-container').forEach(c => {
+                    if (c !== container) {
+                        c.classList.remove('active');
+                    }
+                });
+                // Toggle active class on clicked container
+                container.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>
