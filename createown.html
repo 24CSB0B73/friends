@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            background-color: rgba(165, 77, 42, 0.64);
+            margin: 0;
+            padding: 20px;
+            background-image: url('/api/placeholder/400/400');
+            background-blend-mode: overlay;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .builder-section {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            flex: 2;
+            min-width: 300px;
+        }
+
+        .cart-section {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            flex: 1;
+            height: fit-content;
+            min-width: 300px;
+        }
+
+        h1, h2 {
+            color: #4a3528;
+            margin-bottom: 25px;
+            font-family: 'Georgia', serif;
+            border-bottom: 2px solid #d4b59e;
+            padding-bottom: 10px;
+        }
+
+        .cafe-welcome {
+            font-style: italic;
+            color: #6b4423;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .ingredient-group {
+            margin-bottom: 35px;
+            background: #faf6f1;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .ingredient-title {
+            font-weight: bold;
+            color: #6b4423;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ingredients {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .ingredient-button {
+            padding: 12px 15px;
+            background: white;
+            border: 2px solid #b18664;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Georgia', serif;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ingredient-button:hover {
+            background: #f8efe6;
+            transform: translateY(-2px);
+        }
+
+        .ingredient-button.selected {
+            background: #b18664;
+            color: white;
+            border-color: #8b6646;
+        }
+
+        .recommendations {
+            background: #f3e7d7;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-style: italic;
+            border-left: 4px solid #d4b59e;
+        }
+
+        .cart-item {
+            border-bottom: 1px solid #d4b59e;
+            padding: 15px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+        }
+
+        .remove-button {
+            background: #c17676;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .remove-button:hover {
+            background: #a65959;
+        }
+
+        .total {
+            margin-top: 25px;
+            font-weight: bold;
+            text-align: right;
+            color: #4a3528;
+            font-size: 1.2em;
+        }
+
+        .checkout-button {
+            background: #5d8b4f;
+            color: white;
+            border: none;
+            padding: 15px;
+            width: 100%;
+            border-radius: 8px;
+            margin-top: 20px;
+            cursor: pointer;
+            font-family: 'Georgia', serif;
+            font-size: 1.1em;
+            transition: all 0.3s;
+        }
+
+        .checkout-button:hover {
+            background: #4c7341;
+            transform: translateY(-2px);
+        }
+
+        .add-to-cart {
+            background: #8b6646;
+            color: white;
+            border: none;
+            padding: 15px;
+            width: 100%;
+            border-radius: 8px;
+            margin-top: 20px;
+            cursor: pointer;
+            font-family: 'Georgia', serif;
+            font-size: 1.1em;
+            transition: all 0.3s;
+        }
+
+        .add-to-cart:hover {
+            background: #6b4423;
+            transform: translateY(-2px);
+        }
+
+        .price-tag {
+            color: #6b4423;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="builder-section">
+            <h1>☕ The Central Perk Café</h1>
+            <p class="cafe-welcome">Welcome to our little corner of coffee heaven! Craft your perfect cup from our carefully selected ingredients, each chosen to create that perfect café moment.</p>
+            
+            <div class="ingredient-group">
+                <div class="ingredient-title">🫖 Start with your preferred base:</div>
+                <div class="ingredients" id="bases">
+                    <button class="ingredient-button" onclick="selectIngredient(this, 'base')" data-price="2.00">
+                        Fresh Spring Water
+                        <span class="price-tag">$2.00</span>
+                    </button>
+                    <button class="ingredient-button" onclick="selectIngredient(this, 'base')" data-price="2.00">
+                        Filtered Ice Water
+                        <span class="price-tag">$2.00</span>
+                    </button>
+                    <button class="ingredient-button" onclick="selectIngredient(this, 'base')" data-price="2.50">
+                        Organic Fresh Milk
+                        <span class="price-tag">$2.50</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="ingredient-group">
+                <div class="ingredient-title">✨ Create your magic:</div>
+                <div class="ingredients" id="additions">
+                    <button class="ingredient-button" onclick="selectIngredient(this, 'addition')" data-price="1.00">
+                        House Blend Coffee
+                        <span class="price-tag">$1.00</span>
+                    </button>
+                    <button class="ingredient-button" onclick="selectIngredient(this, 'addition')" data-price="0.75">
+                        Creamy Milk Powder
+                        <span class="price-tag">$0.75</span>
+                    </button>
+                    <button class="ingredient-button" onclick="selectIngredient(this, 'addition')" data-price="0.25">
+                        Raw Brown Sugar
+                        <span class="price-tag">$0.25</span>
+                    </button>
+                    <button class="ingredient-button" onclick="selectIngredient(this, 'addition')" data-price="1.50">
+                        Madagascar Vanilla
+                        <span class="price-tag">$1.50</span>
+                    </button>
+                    <button class="ingredient-button" onclick="selectIngredient(this, 'addition')" data-price="1.00">
+                        Whipped Fresh Cream
+                        <span class="price-tag">$1.00</span>
+                    </button>
+                    <button class="ingredient-button" onclick="selectIngredient(this, 'addition')" data-price="1.25">
+                        Belgian Chocolate Chips
+                        <span class="price-tag">$1.25</span>
+                    </button>
+                    <button class="ingredient-button" onclick="selectIngredient(this, 'addition')" data-price="1.50">
+                        Premium Chocolate Sauce
+                        <span class="price-tag">$1.50</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="recommendations" class="recommendations" style="display: none;">
+                <strong>💭 Barista's Tip:</strong>
+                <span id="recommendation-text"></span>
+            </div>
+
+            <button class="add-to-cart" onclick="addToCart()">Add to Your Order</button>
+        </div>
+
+        <div class="cart-section">
+            <h2>Your Coffee Cart 🛒</h2>
+            <div id="cart-items"></div>
+            <div class="total">Total: $<span id="cart-total">0.00</span></div>
+            <button class="checkout-button">Complete Your Order</button>
+        </div>
+    </div>
+
+    <script>
+        let selectedBase = null;
+        let selectedAdditions = new Set();
+        let cart = [];
+
+        const recommendations = {
+            'Organic Fresh Milk': 'Our baristas recommend adding Whipped Fresh Cream for that extra touch of luxury!',
+            'House Blend Coffee': 'Try it with Raw Brown Sugar and Creamy Milk Powder for our signature café taste!',
+            'Whipped Fresh Cream': 'Make it extra special with our Belgian Chocolate Chips!',
+            'Madagascar Vanilla': 'A dollop of Whipped Fresh Cream would make this absolutely divine!'
+        };
+
+        function selectIngredient(button, type) {
+            if (type === 'base') {
+                document.querySelectorAll('#bases .ingredient-button').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+                button.classList.add('selected');
+                selectedBase = {
+                    name: button.textContent.split('$')[0].trim(),
+                    price: parseFloat(button.getAttribute('data-price'))
+                };
+            } else {
+                button.classList.toggle('selected');
+                const addition = {
+                    name: button.textContent.split('$')[0].trim(),
+                    price: parseFloat(button.getAttribute('data-price'))
+                };
+                
+                if (button.classList.contains('selected')) {
+                    selectedAdditions.add(addition.name);
+                } else {
+                    selectedAdditions.delete(addition.name);
+                }
+            }
+
+            const recommendationsDiv = document.getElementById('recommendations');
+            const recommendationText = document.getElementById('recommendation-text');
+            
+            if (selectedBase && recommendations[selectedBase.name]) {
+                recommendationsDiv.style.display = 'block';
+                recommendationText.textContent = recommendations[selectedBase.name];
+            } else {
+                const lastAddition = Array.from(selectedAdditions).pop();
+                if (lastAddition && recommendations[lastAddition]) {
+                    recommendationsDiv.style.display = 'block';
+                    recommendationText.textContent = recommendations[lastAddition];
+                } else {
+                    recommendationsDiv.style.display = 'none';
+                }
+            }
+        }
+
+        function addToCart() {
+            if (!selectedBase) {
+                alert('Please select a base for your coffee creation!');
+                return;
+            }
+
+            const additions = Array.from(document.querySelectorAll('#additions .selected')).map(button => ({
+                name: button.textContent.split('$')[0].trim(),
+                price: parseFloat(button.getAttribute('data-price'))
+            }));
+
+            const cartItem = {
+                base: selectedBase,
+                additions: additions,
+                total: selectedBase.price + additions.reduce((sum, item) => sum + item.price, 0)
+            };
+
+            cart.push(cartItem);
+            updateCartDisplay();
+            resetSelections();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartDisplay();
+        }
+
+        function updateCartDisplay() {
+            const cartItems = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+            
+            cartItems.innerHTML = cart.map((item, index) => `
+                <div class="cart-item">
+                    <div>
+                        <strong>${item.base.name}</strong><br>
+                        ${item.additions.map(a => a.name).join(', ') || 'No additions'}
+                        <br>$${item.total.toFixed(2)}
+                    </div>
+                    <button class="remove-button" onclick="removeFromCart(${index})">×</button>
+                </div>
+            `).join('');
+
+            const total = cart.reduce((sum, item) => sum + item.total, 0);
+            cartTotal.textContent = total.toFixed(2);
+        }
+
+        function resetSelections() {
+            selectedBase = null;
+            selectedAdditions.clear();
+            document.querySelectorAll('.ingredient-button').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            document.getElementById('recommendations').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

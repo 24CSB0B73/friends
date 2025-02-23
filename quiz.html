@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url("/api/placeholder/1080/2340");
+            margin: 0;
+            padding: 20px;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            text-align: center;
+            color: #795548;
+            margin-bottom: 30px;
+        }
+
+        .score-display {
+            text-align: center;
+            font-size: 24px;
+            color: #795548;
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #fff3e0;
+            border-radius: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #fff8e1;
+            border-radius: 8px;
+            border-left: 4px solid #795548;
+        }
+
+        .radio-group {
+            margin: 10px 0;
+        }
+
+        .radio-group label {
+            display: block;
+            padding: 10px;
+            margin: 5px 0;
+            background-color: white;
+            border: 2px solid #deb887;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .radio-group label:hover {
+            background-color: #fff3e0;
+        }
+
+        .radio-group input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #795548;
+            font-weight: bold;
+        }
+
+        input[type="text"], 
+        select, 
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #deb887;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .submit-btn {
+            background-color: #8d6e63;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            background-color: #6d4c41;
+        }
+
+        .result-card {
+            background-color: #dff0d8;
+            color: #3c763d;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .question-number {
+            background-color: #795548;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 50%;
+            margin-right: 10px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>☕ The Ultimate Friends Quiz ☕</h1>
+            <p>How well do you know your favorite sitcom?</p>
+        </div>
+
+        <div class="score-display">
+            Current Score: <span id="currentScore">0</span> points
+        </div>
+
+        <form id="friendsQuiz" onsubmit="return validateForm(event)">
+            <div class="form-group">
+                <label>Your Name:</label>
+                <input type="text" name="name" placeholder="Enter your name">
+                <div class="error">This field is required!</div>
+            </div>
+
+            <div class="form-group">
+                <span class="question-number">1</span>
+                <label>What was Monica's nickname when she was a field hockey goalie?</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="q1" value="big_mon"> Big Mon</label>
+                    <label><input type="radio" name="q1" value="harmonica"> Harmonica</label>
+                    <label><input type="radio" name="q1" value="big_fat_goalie" data-correct="true"> Big Fat Goalie</label>
+                    <label><input type="radio" name="q1" value="mon_the_tank"> Mon the Tank</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="question-number">2</span>
+                <label>What's the name of Phoebe's twin sister?</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="q2" value="ursula" data-correct="true"> Ursula</label>
+                    <label><input type="radio" name="q2" value="jill"> Jill</label>
+                    <label><input type="radio" name="q2" value="amy"> Amy</label>
+                    <label><input type="radio" name="q2" value="leslie"> Leslie</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="question-number">3</span>
+                <label>What's Chandler's job?</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="q3" value="accountant"> Accountant</label>
+                    <label><input type="radio" name="q3" value="data_analyst"> Data Analyst</label>
+                    <label><input type="radio" name="q3" value="statistical_analysis" data-correct="true"> Statistical Analysis and Data Reconfiguration</label>
+                    <label><input type="radio" name="q3" value="advertising"> Advertising Executive</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="question-number">4</span>
+                <label>Who's your favorite Friends character?</label>
+                <select name="character">
+                    <option value="">Select a character</option>
+                    <option value="rachel">Rachel Green</option>
+                    <option value="monica">Monica Geller</option>
+                    <option value="phoebe">Phoebe Buffay</option>
+                    <option value="joey">Joey Tribbiani</option>
+                    <option value="chandler">Chandler Bing</option>
+                    <option value="ross">Ross Geller</option>
+                </select>
+                <div class="error">Please select a character!</div>
+            </div>
+
+            <div class="form-group">
+                <span class="question-number">5</span>
+                <label>Complete the lyrics: "Smelly Cat, Smelly Cat..."</label>
+                <input type="text" name="lyrics" placeholder="What are they feeding you?" data-correct="what are they feeding you">
+                <div class="error">This field is required!</div>
+            </div>
+
+            <div class="form-group">
+                <span class="question-number">6</span>
+                <label>What's Joey's catchphrase?</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="q4" value="hi"> Hi!</label>
+                    <label><input type="radio" name="q4" value="how_you_doin" data-correct="true"> How you doin'?</label>
+                    <label><input type="radio" name="q4" value="sup"> Sup?</label>
+                    <label><input type="radio" name="q4" value="hello"> Hello!</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="question-number">7</span>
+                <label>Why do you think the orange couch was always available?</label>
+                <textarea name="couch" placeholder="Share your theory..."></textarea>
+                <div class="error">This field is required!</div>
+            </div>
+
+            <button type="submit" class="submit-btn">Could I BE any more ready to submit?</button>
+        </form>
+
+        <div id="resultCard" class="result-card">
+            <h2>Quiz Results</h2>
+            <p>Your Score: <span id="finalScore">0</span> points</p>
+            <p>Thank you for playing! You're a true Friends fan!</p>
+        </div>
+    </div>
+
+    <script>
+        let currentScore = 0;
+
+        function updateScore(points) {
+            currentScore += points;
+            document.getElementById('currentScore').textContent = currentScore;
+            document.getElementById('finalScore').textContent = currentScore;
+        }
+
+        function checkAnswer(element) {
+            if (element.type === 'radio') {
+                const radioGroup = element.closest('.radio-group');
+                const allOptions = radioGroup.querySelectorAll('input[type="radio"]');
+                allOptions.forEach(option => {
+                    if (option.checked && option.dataset.correct === 'true') {
+                        updateScore(10);
+                    }
+                });
+            } else if (element.type === 'text' && element.dataset.correct) {
+                const userAnswer = element.value.toLowerCase().trim();
+                const correctAnswer = element.dataset.correct.toLowerCase();
+                if (userAnswer === correctAnswer) {
+                    updateScore(10);
+                }
+            }
+        }
+
+        function validateForm(event) {
+            event.preventDefault();
+            let isValid = true;
+            const form = document.getElementById('friendsQuiz');
+            const inputs = form.querySelectorAll('input[type="text"], select, textarea');
+            
+            inputs.forEach(input => {
+                if (!input.value.trim()) {
+                    isValid = false;
+                    input.nextElementSibling.style.display = 'block';
+                } else {
+                    input.nextElementSibling.style.display = 'none';
+                    checkAnswer(input);
+                }
+            });
+
+            // Check radio button answers
+            const radioGroups = form.querySelectorAll('.radio-group');
+            radioGroups.forEach(group => {
+                const radios = group.querySelectorAll('input[type="radio"]');
+                let answered = false;
+                radios.forEach(radio => {
+                    if (radio.checked) {
+                        answered = true;
+                        checkAnswer(radio);
+                    }
+                });
+                if (!answered) {
+                    isValid = false;
+                }
+            });
+
+            if (isValid) {
+                document.getElementById('resultCard').style.display = 'block';
+                form.style.display = 'none';
+            }
+
+            return false;
+        }
+
+        // Add event listeners to radio buttons for immediate feedback
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', () => checkAnswer(radio));
+        });
+    </script>
+</body>
+</html>
